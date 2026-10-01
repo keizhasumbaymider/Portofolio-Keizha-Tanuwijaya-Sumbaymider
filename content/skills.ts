@@ -47,6 +47,6 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: "Learning",
-    skills: [{ name: "Java", level: "learning", note: "basic" }],
+    skills: [{ name: "Java", level: "learning" }],
   },
 ];

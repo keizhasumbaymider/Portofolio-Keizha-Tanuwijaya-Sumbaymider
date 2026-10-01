@@ -7,10 +7,53 @@ import { MobileMenu } from "./MobileMenu";
 import { List } from "@phosphor-icons/react";
 
 export function Navigation() {
+  const greetings = [
+    "Hello",
+    "Halo",
+    "你好",
+    "Hola",
+    "Bonjour",
+    "Halo",
+    "こんにちは",
+    "مرحبا",
+    "안녕하세요",
+    "Ciao",
+    "Здравствуйте",
+  ];
+
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentGreetingIndex, setCurrentGreetingIndex] = useState(0);
+  const [displayedGreeting, setDisplayedGreeting] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentGreeting = greetings[currentGreetingIndex];
+
+    const timeout = window.setTimeout(() => {
+      if (!isDeleting) {
+        const nextValue = currentGreeting.slice(0, displayedGreeting.length + 1);
+        setDisplayedGreeting(nextValue);
+
+        if (nextValue === currentGreeting) {
+          window.setTimeout(() => setIsDeleting(true), 900);
+        }
+      } else {
+        const nextValue = currentGreeting.slice(0, Math.max(0, displayedGreeting.length - 1));
+        setDisplayedGreeting(nextValue);
+
+        if (nextValue === "") {
+          setIsDeleting(false);
+          setCurrentGreetingIndex((prev) => (prev + 1) % greetings.length);
+          setDisplayedGreeting("");
+        }
+      }
+    }, isDeleting ? 60 : 110);
+
+    return () => window.clearTimeout(timeout);
+  }, [displayedGreeting, isDeleting, currentGreetingIndex, greetings]);
 
   // Scroll detection to hide on scroll down, show on scroll up
   useEffect(() => {
@@ -76,7 +119,7 @@ export function Navigation() {
             className="font-mono text-sm tracking-tight text-[var(--color-text)] hover:opacity-75 transition-opacity"
             aria-label="Back to top"
           >
-            {site.fullName}
+            {displayedGreeting}
           </a>
 
           {/* Desktop Navigation */}

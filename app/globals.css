@@ -11,6 +11,9 @@
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --font-weight-light: 350;
+  --font-weight-normal: 450;
+  --font-weight-medium: 550;
 
   --radius: 0px;
 }
@@ -19,9 +22,11 @@
   --color-bg: #f4f4f2;
   --color-surface: #eaeae8;
   --color-text: #1a1a19;
-  --color-text-muted: #6b6b68;
+  --color-text-muted: #555550;
   --color-border: #d4d4d0;
   --color-accent: #1a1a19;
+  --cursor-glow-color: rgba(28, 30, 31, 0.035);
+  --cursor-glow-blend: multiply;
 }
 
 .dark {
@@ -31,26 +36,141 @@
   --color-text-muted: #9a9895;
   --color-border: #2e2e2c;
   --color-accent: #f0efed;
+  --cursor-glow-color: rgba(199, 218, 240, 0.05);
+  --cursor-glow-blend: screen;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+@keyframes theme-circle-reveal {
+  from {
+    clip-path: circle(0 at var(--theme-reveal-x) var(--theme-reveal-y));
+  }
+  to {
+    clip-path: circle(
+      var(--theme-reveal-radius) at var(--theme-reveal-x) var(--theme-reveal-y)
+    );
+  }
+}
+
+::view-transition-old(root) {
+  animation: none;
+}
+
+::view-transition-new(root) {
+  animation: theme-circle-reveal 650ms var(--ease-default) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+
+  ::view-transition-new(root) {
+    animation-duration: 380ms;
+  }
 }
 
 body {
+  isolation: isolate;
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 450;
   font-size: 1rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@property --gold-x {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --gold-y {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.hero-name-gold-gradient {
+  background-image: radial-gradient(
+    ellipse 210px 150px at var(--gold-x, 50%) var(--gold-y, 50%),
+    #fff8df 0%,
+    #f5e5b6 22%,
+    #e8d093 44%,
+    #d5b66d 65%,
+    rgb(184 139 66 / 0.6) 82%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition:
+    opacity 240ms ease-out,
+    --gold-x 190ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    --gold-y 190ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.hero-name-gold-gradient.is-active {
+  opacity: 1;
+}
+
+.hero-name-gold-gradient--compact {
+  background-image: radial-gradient(
+    ellipse 150px 100px at var(--gold-x, 50%) var(--gold-y, 50%),
+    #fff8df 0%,
+    #f5e5b6 22%,
+    #e8d093 44%,
+    #d5b66d 65%,
+    rgb(184 139 66 / 0.6) 82%,
+    transparent 100%
+  );
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hero-name-gold-gradient {
+    display: none;
+  }
+}
+
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    64px circle at var(--cursor-x, -1000px) var(--cursor-y, -1000px),
+    var(--cursor-glow-color) 0%,
+    color-mix(in srgb, var(--cursor-glow-color) 34%, transparent) 38%,
+    transparent 82%
+  );
+  mix-blend-mode: var(--cursor-glow-blend);
+  transition: opacity 180ms ease-out;
+}
+
+.cursor-glow.is-visible {
+  opacity: 1;
+}
+
+@media (pointer: coarse) {
+  .cursor-glow {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-name-gold-gradient {
+    animation: none;
+    transition: none;
+  }
+
+  .cursor-glow {
+    transition: none;
+  }
 }
 
 .theme-transitioning,
@@ -76,4 +196,54 @@ body {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
   border-radius: var(--radius);
+}
+
+@keyframes copy-cursor-click {
+  0% {
+    opacity: 0;
+    transform: translate(8px, 8px) scale(0.7);
+  }
+  45% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  65% {
+    transform: translate(0, 0) scale(0.82);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.82);
+  }
+}
+
+@keyframes copy-check-in {
+  0%,
+  55% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.copy-cursor-animation {
+  animation: copy-cursor-click 550ms var(--ease-out) both;
+  z-index: 1;
+}
+
+.copy-check-animation {
+  animation: copy-check-in 550ms var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy-cursor-animation,
+  .copy-check-animation {
+    animation: none;
+  }
+
+  .copy-cursor-animation {
+    display: none;
+  }
 }

@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Mono, Manrope } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { site } from "@/content/site";
+import { CursorGlow } from "@/components/ui/CursorGlow";
 import "./globals.css";
 
-const geistSans = Geist({
+const manropeSans = Manrope({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
+const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -51,10 +53,11 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${manropeSans.variable} ${ibmPlexMono.variable}`}
     >
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <CursorGlow />
           {children}
         </ThemeProvider>
       </body>

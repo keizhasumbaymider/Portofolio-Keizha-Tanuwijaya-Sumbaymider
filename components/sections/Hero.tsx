@@ -1,8 +1,14 @@
 ﻿import Image from "next/image";
 import { site } from "@/content/site";
 import { ArrowDown, ArrowUpRight } from "@/components/ui/Icons";
+import { AnimatedName } from "@/components/sections/AnimatedName";
+import { HeroIntro } from "@/components/sections/HeroIntro";
 
 export function Hero() {
+  const heroIntro =
+    site.heroIntro ||
+    "Undergraduate student exploring software engineering, machine learning systems, and deliberate interface design. Preparing for internship opportunities.";
+
   return (
     <section
       id="hero"
@@ -20,21 +26,26 @@ export function Hero() {
             Software Engineering · BINUS University
           </div>
 
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight text-[var(--color-text)] leading-[1.05] mb-6">
-            {site.fullName}
-          </h1>
-
-          <p className="text-lg sm:text-xl text-[var(--color-text-muted)] font-light max-w-[55ch] leading-relaxed mb-8">
-            {site.heroIntro ||
-              "Undergraduate student exploring software engineering, machine learning systems, and deliberate interface design. Preparing for Semester 6 internship opportunities."}
+          <p className="mb-1 text-sm sm:text-base font-medium tracking-[0.12em] uppercase text-[var(--color-text-muted)] leading-none">
+            Hi, I&apos;m
           </p>
+
+          <AnimatedName
+            name={site.fullName}
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-[var(--color-text)] leading-[0.95] mb-6"
+          />
+
+          <HeroIntro
+            text={heroIntro}
+            className="text-lg sm:text-xl text-[var(--color-text-muted)] font-normal max-w-[55ch] leading-relaxed mb-8"
+          />
 
           <div className="flex flex-wrap items-center gap-4">
             <a
               href="#projects"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded bg-[var(--color-text)] text-[var(--color-bg)] font-medium text-sm hover:opacity-90 transition-opacity focus-visible:outline-2"
             >
-              <span>View selected work</span>
+              <span>View selected projects</span>
               <ArrowDown size={16} weight="bold" aria-hidden="true" />
             </a>
 
@@ -45,6 +56,21 @@ export function Hero() {
               <span>Get in touch</span>
               <ArrowUpRight size={16} weight="regular" aria-hidden="true" />
             </a>
+
+            <a
+              href={
+                site.cvPath || "/cv/CV%20Keizha%20Tanuwijaya%20Sumbaymider.pdf"
+              }
+              target={site.cvPath ? "_blank" : undefined}
+              rel={site.cvPath ? "noreferrer noopener" : undefined}
+              download={
+                site.cvPath ? undefined : "CV Keizha Tanuwijaya Sumbaymider.pdf"
+              }
+              className="inline-flex items-center gap-2 px-5 py-3.5 rounded border border-[var(--color-border)] text-[var(--color-text)] font-normal text-sm hover:bg-[var(--color-surface)] transition-colors focus-visible:outline-2"
+            >
+              <span>Download CV</span>
+              <ArrowUpRight size={16} weight="regular" aria-hidden="true" />
+            </a>
           </div>
         </div>
 
@@ -52,10 +78,11 @@ export function Hero() {
         <div className="lg:col-span-4 flex justify-start lg:justify-end">
           <div className="relative w-full max-w-[340px] aspect-[4/5] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm group">
             <Image
-              src="/images/portrait/keizha.jpg"
+              src="/images/portrait/Keizha Foto.jpeg"
               alt="Keizha Tanuwijaya Sumbaymider"
               fill
               priority
+              unoptimized
               sizes="(max-width: 1024px) 100vw, 340px"
               className="object-cover object-[center_20%] transition-transform duration-500 group-hover:scale-[1.02]"
             />
@@ -68,7 +95,7 @@ export function Hero() {
                 Keizha Tanuwijaya S.
               </p>
               <p className="text-xs font-mono text-neutral-300 drop-shadow-sm">
-                Software Engineering · BINUS
+                Software Engineering · BINUS University
               </p>
             </div>
           </div>

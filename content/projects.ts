@@ -8,6 +8,14 @@ export const projects: Project[] = [
     description:
       "An academic machine learning project that uses transfer learning (MobileNetV2) to classify fruit images into Fresh or Rotten categories across Apple, Banana, and Orange. Built with TensorFlow and Keras, including data augmentation.",
     type: "team",
+    media: [
+      {
+        src: "/images/projects/deepfruit/Deepfruit.png",
+        alt: "DeepFruit freshness detection product interface",
+        width: 1892,
+        height: 902,
+      },
+    ],
     // TBD-06: individual role unknown — not included per honesty rule
     // role: undefined,
     // TBD-06: team size unknown
@@ -44,6 +52,14 @@ export const projects: Project[] = [
     type: "academic",
     status: "Not deployed",
     year: 2024,
+    media: [
+      {
+        src: "/images/projects/fontdale-mall/Fontdale.png",
+        alt: "FontDale Mall project website preview",
+        width: 1900,
+        height: 902,
+      },
+    ],
     technologies: [{ name: "Figma", verified: true }],
     order: 2,
     featured: true,

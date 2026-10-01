@@ -75,7 +75,7 @@ export function MobileMenu({
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className={`text-2xl font-light tracking-tight transition-colors ${
+              className={`text-2xl font-medium tracking-tight transition-colors ${
                 isActive
                   ? "text-[var(--color-text)] font-normal"
                   : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]"

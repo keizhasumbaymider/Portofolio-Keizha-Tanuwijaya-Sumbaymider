@@ -3,7 +3,7 @@ export function AboutSection() {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="py-24 px-6 max-w-6xl mx-auto border-t border-[var(--color-border)]"
+      className="py-16 px-6 sm:py-24 max-w-6xl mx-auto border-t border-b border-[var(--color-border)]"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-4">
@@ -12,25 +12,26 @@ export function AboutSection() {
           </span>
           <h2
             id="about-heading"
-            className="text-3xl sm:text-5xl font-light tracking-tight text-[var(--color-text)]"
+            className="text-3xl sm:text-5xl font-medium tracking-tight text-[var(--color-text)]"
+            style={{ fontFamily: "'Iowan Old Style', 'Georgia', serif" }}
           >
             About
           </h2>
         </div>
 
-        <div className="lg:col-span-8 flex flex-col gap-6 text-lg sm:text-xl font-light leading-relaxed text-[var(--color-text)] max-w-[65ch]">
+        <div className="lg:col-span-8 flex flex-col gap-6 text-base font-medium leading-relaxed text-[var(--color-text)] max-w-[65ch] text-justify">
           <p>
-            I am a Software Engineering undergraduate at BINUS University,
-            focused on building dependable software architectures, practical
-            machine learning applications, and clean, restrained user
-            interfaces.
+            I'm a Computer Science student at BINUS University with an interest
+            in Software Engineering and digital product development. I enjoy
+            combining programming and UI/UX to turn ideas into functional,
+            intuitive experiences.
           </p>
           <p className="text-[var(--color-text-muted)]">
-            My work is centered around continuous technical growth—bridging
-            computer vision and web development with a focus on usability and
-            honest engineering. Currently preparing for internship roles where I
-            can contribute to real-world codebases and collaborate with
-            thoughtful teams.
+            Through academic and personal projects, I've explored web
+            development, machine learning, computer vision, databases, and
+            interface design using technologies such as C++, Python, Java,
+            MySQL, and Figma. I'm continuously learning, experimenting, and
+            building projects that help me grow as a software engineer.
           </p>
         </div>
       </div>

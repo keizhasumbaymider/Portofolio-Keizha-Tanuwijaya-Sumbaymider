@@ -1,7 +1,8 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useSyncExternalStore } from "react";
+import { useRef, useSyncExternalStore, type MouseEvent } from "react";
+import { flushSync } from "react-dom";
 import { Sun, Moon } from "@phosphor-icons/react";
 
 function subscribe() {
@@ -10,10 +11,11 @@ function subscribe() {
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
+  const isTransitioning = useRef(false);
   const mounted = useSyncExternalStore(
     subscribe,
     () => true,
-    () => false
+    () => false,
   );
 
   if (!mounted) {
@@ -31,12 +33,62 @@ export function ThemeToggle() {
 
   const isDark = resolvedTheme === "dark";
 
-  const handleToggle = () => {
-    document.documentElement.classList.add("theme-transitioning");
-    setTheme(isDark ? "light" : "dark");
-    setTimeout(() => {
-      document.documentElement.classList.remove("theme-transitioning");
-    }, 300);
+  const handleToggle = (event: MouseEvent<HTMLButtonElement>) => {
+    if (isTransitioning.current) return;
+
+    const nextTheme = isDark ? "light" : "dark";
+    const root = document.documentElement;
+    const transitionDocument = document as Document & {
+      startViewTransition?: (update: () => void) => {
+        finished: Promise<void>;
+      };
+    };
+
+    if (!transitionDocument.startViewTransition) {
+      root.classList.add("theme-transitioning");
+      setTheme(nextTheme);
+      window.setTimeout(() => {
+        root.classList.remove("theme-transitioning");
+      }, 300);
+      return;
+    }
+
+    const buttonBounds = event.currentTarget.getBoundingClientRect();
+    const x =
+      event.detail > 0
+        ? event.clientX
+        : buttonBounds.left + buttonBounds.width / 2;
+    const y =
+      event.detail > 0
+        ? event.clientY
+        : buttonBounds.top + buttonBounds.height / 2;
+    const farthestX = Math.max(x, window.innerWidth - x);
+    const farthestY = Math.max(y, window.innerHeight - y);
+
+    root.style.setProperty("--theme-reveal-x", `${x}px`);
+    root.style.setProperty("--theme-reveal-y", `${y}px`);
+    root.style.setProperty(
+      "--theme-reveal-radius",
+      `${Math.hypot(farthestX, farthestY)}px`,
+    );
+
+    isTransitioning.current = true;
+    const finishTransition = () => {
+      root.style.removeProperty("--theme-reveal-x");
+      root.style.removeProperty("--theme-reveal-y");
+      root.style.removeProperty("--theme-reveal-radius");
+      isTransitioning.current = false;
+    };
+
+    try {
+      const transition = transitionDocument.startViewTransition(() => {
+        flushSync(() => setTheme(nextTheme));
+      });
+      void transition.finished.then(finishTransition, finishTransition);
+    } catch {
+      finishTransition();
+      setTheme(nextTheme);
+    }
   };
 
   return (
