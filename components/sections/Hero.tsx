@@ -71,30 +71,30 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Right Column: Portrait Photo with Next.js Image */}
+        {/* Right Column: Keizha's Real Portrait Photo */}
         <motion.div
           variants={shouldReduceMotion ? undefined : fadeUpVariants}
           className="lg:col-span-4 flex justify-start lg:justify-end"
         >
-          <div className="relative w-full max-w-[320px] aspect-[3/4] rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm group">
+          <div className="relative w-full max-w-[340px] aspect-[4/5] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm group">
             <Image
               src="/images/portrait/keizha.jpg"
               alt="Keizha Tanuwijaya Sumbaymider"
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 320px"
-              className="object-cover object-top filter grayscale contrast-105 group-hover:grayscale-0 transition-all duration-500"
+              sizes="(max-width: 1024px) 100vw, 340px"
+              className="object-cover object-[center_22%] transition-transform duration-500 group-hover:scale-[1.02]"
             />
-            {/* Subtle gradient vignette at the bottom */}
+            {/* Subtle soft gradient overlay at the bottom for readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
             {/* Bottom Caption Overlay */}
-            <div className="absolute bottom-3 left-4 right-4 text-white pointer-events-none">
-              <p className="text-xs font-mono font-medium tracking-tight">
+            <div className="absolute bottom-4 left-4 right-4 text-white pointer-events-none">
+              <p className="text-sm font-medium tracking-tight drop-shadow-sm">
                 Keizha Tanuwijaya S.
               </p>
-              <p className="text-[10px] font-mono text-neutral-300">
-                Jakarta, Indonesia
+              <p className="text-xs font-mono text-neutral-300 drop-shadow-sm">
+                Software Engineering · BINUS
               </p>
             </div>
           </div>
