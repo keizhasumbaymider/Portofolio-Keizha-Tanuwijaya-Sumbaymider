@@ -21,16 +21,16 @@ export function AboutSection() {
 
         <div className="lg:col-span-8 flex flex-col gap-6 text-base font-medium leading-relaxed text-[var(--color-text)] max-w-[65ch] text-justify">
           <p>
-            I'm a Computer Science student at BINUS University with an interest
+            I&apos;m a Computer Science student at BINUS University with an interest
             in Software Engineering and digital product development. I enjoy
             combining programming and UI/UX to turn ideas into functional,
             intuitive experiences.
           </p>
           <p className="text-[var(--color-text-muted)]">
-            Through academic and personal projects, I've explored web
+            Through academic and personal projects, I&apos;ve explored web
             development, machine learning, computer vision, databases, and
             interface design using technologies such as C++, Python, Java,
-            MySQL, and Figma. I'm continuously learning, experimenting, and
+            MySQL, and Figma. I&apos;m continuously learning, experimenting, and
             building projects that help me grow as a software engineer.
           </p>
         </div>

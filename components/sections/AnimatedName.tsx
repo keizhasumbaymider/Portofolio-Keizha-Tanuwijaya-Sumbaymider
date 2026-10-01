@@ -20,13 +20,12 @@ export function AnimatedName({ name, className }: AnimatedNameProps) {
     if (!name) return;
 
     if (!isInView) {
-      setVisibleCharacters(0);
-      return;
+      const resetTimeout = window.setTimeout(() => setVisibleCharacters(0), 0);
+      return () => window.clearTimeout(resetTimeout);
     }
 
     const intervalDuration = 2500 / name.length;
-    let interval: number;
-    interval = window.setInterval(() => {
+    const interval = window.setInterval(() => {
       setVisibleCharacters((currentCount) => {
         const nextCount = currentCount + 1;
         if (nextCount >= name.length) window.clearInterval(interval);

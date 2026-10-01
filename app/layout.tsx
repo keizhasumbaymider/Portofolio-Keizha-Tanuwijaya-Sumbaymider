@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Manrope } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import { site } from "@/content/site";
 import { CursorGlow } from "@/components/ui/CursorGlow";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import "./globals.css";
 
 const manropeSans = Manrope({

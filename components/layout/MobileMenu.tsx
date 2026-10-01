@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type MouseEvent } from "react";
 import { site } from "@/content/site";
 import { ThemeToggle } from "./ThemeToggle";
 import { X } from "@phosphor-icons/react";
@@ -9,12 +9,14 @@ interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
   activeSection: string;
+  onNavigate: (event: MouseEvent<HTMLAnchorElement>, href: string) => void;
 }
 
 export function MobileMenu({
   isOpen,
   onClose,
   activeSection,
+  onNavigate,
 }: MobileMenuProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -74,7 +76,10 @@ export function MobileMenu({
             <a
               key={item.href}
               href={item.href}
-              onClick={onClose}
+              onClick={(event) => {
+                onNavigate(event, item.href);
+                onClose();
+              }}
               className={`text-2xl font-medium tracking-tight transition-colors ${
                 isActive
                   ? "text-[var(--color-text)] font-normal"

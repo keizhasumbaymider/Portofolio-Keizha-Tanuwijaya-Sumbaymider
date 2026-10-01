@@ -1,26 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { site } from "@/content/site";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileMenu } from "./MobileMenu";
 import { List } from "@phosphor-icons/react";
 
-export function Navigation() {
-  const greetings = [
-    "Hello",
-    "Halo",
-    "你好",
-    "Hola",
-    "Bonjour",
-    "Halo",
-    "こんにちは",
-    "مرحبا",
-    "안녕하세요",
-    "Ciao",
-    "Здравствуйте",
-  ];
+const greetings = [
+  "Hello",
+  "Halo",
+  "你好",
+  "Hola",
+  "Bonjour",
+  "Halo",
+  "こんにちは",
+  "مرحبا",
+  "안녕하세요",
+  "Ciao",
+  "Здравствуйте",
+];
 
+export function Navigation() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState("");
@@ -28,6 +28,18 @@ export function Navigation() {
   const [currentGreetingIndex, setCurrentGreetingIndex] = useState(0);
   const [displayedGreeting, setDisplayedGreeting] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleNavigation = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    const target = document.getElementById(href.replace("#", ""));
+    if (!target) return;
+
+    event.preventDefault();
+    const headerOffset = 80;
+    const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+    window.history.pushState(null, "", href);
+    window.scrollTo({ top: targetPosition, behavior: "smooth" });
+  };
 
   useEffect(() => {
     const currentGreeting = greetings[currentGreetingIndex];
@@ -53,7 +65,7 @@ export function Navigation() {
     }, isDeleting ? 60 : 110);
 
     return () => window.clearTimeout(timeout);
-  }, [displayedGreeting, isDeleting, currentGreetingIndex, greetings]);
+  }, [displayedGreeting, isDeleting, currentGreetingIndex]);
 
   // Scroll detection to hide on scroll down, show on scroll up
   useEffect(() => {
@@ -134,6 +146,7 @@ export function Navigation() {
                 <a
                   key={item.href}
                   href={item.href}
+                  onClick={(event) => handleNavigation(event, item.href)}
                   className={`text-sm tracking-tight transition-colors relative py-1 ${
                     isActive
                       ? "text-[var(--color-text)] font-medium"
@@ -176,6 +189,7 @@ export function Navigation() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         activeSection={activeSection}
+        onNavigate={handleNavigation}
       />
     </>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/providers/ThemeProvider";
 import { useRef, useSyncExternalStore, type MouseEvent } from "react";
 import { flushSync } from "react-dom";
 import { Sun, Moon } from "@phosphor-icons/react";
