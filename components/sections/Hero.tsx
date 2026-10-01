@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { site } from "@/content/site";
 import { ArrowDown, ArrowUpRight } from "@/components/ui/Icons";
 
@@ -7,11 +7,11 @@ export function Hero() {
     <section
       id="hero"
       aria-label="Introduction"
-      className="min-h-[100dvh] pt-24 pb-16 px-6 max-w-6xl mx-auto flex flex-col justify-center"
+      className="min-h-[100dvh] pt-28 pb-16 px-6 max-w-6xl mx-auto flex flex-col justify-center"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         {/* Left Column: Typography & CTAs */}
-        <div className="lg:col-span-8 flex flex-col items-start transition-all duration-700 ease-out">
+        <div className="lg:col-span-8 flex flex-col items-start">
           <div className="mb-4 inline-flex items-center gap-2 px-2.5 py-1 text-xs font-mono rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
             <span
               className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"
@@ -49,7 +49,7 @@ export function Hero() {
         </div>
 
         {/* Right Column: Keizha's Real Portrait Photo */}
-        <div className="lg:col-span-4 flex justify-start lg:justify-end transition-all duration-700 ease-out">
+        <div className="lg:col-span-4 flex justify-start lg:justify-end">
           <div className="relative w-full max-w-[340px] aspect-[4/5] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm group">
             <Image
               src="/images/portrait/keizha.jpg"
@@ -57,9 +57,9 @@ export function Hero() {
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 340px"
-              className="object-cover object-[center_22%] transition-transform duration-500 group-hover:scale-[1.02]"
+              className="object-cover object-[center_20%] transition-transform duration-500 group-hover:scale-[1.02]"
             />
-            {/* Subtle soft gradient overlay at the bottom for readability */}
+            {/* Soft gradient overlay at the bottom for caption contrast */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
             {/* Bottom Caption Overlay */}
