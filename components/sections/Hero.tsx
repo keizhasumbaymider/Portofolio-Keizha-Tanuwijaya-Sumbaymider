@@ -1,13 +1,8 @@
-"use client";
-
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
 import { site } from "@/content/site";
-import { ArrowDown, ArrowUpRight } from "@phosphor-icons/react";
+import { ArrowDown, ArrowUpRight } from "@/components/ui/Icons";
 
 export function Hero() {
-  const shouldReduceMotion = useReducedMotion();
-
   return (
     <section
       id="hero"
@@ -16,12 +11,7 @@ export function Hero() {
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
         {/* Left Column: Typography & CTAs */}
-        <motion.div
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-          className="lg:col-span-8 flex flex-col items-start"
-        >
+        <div className="lg:col-span-8 flex flex-col items-start transition-all duration-700 ease-out">
           <div className="mb-4 inline-flex items-center gap-2 px-2.5 py-1 text-xs font-mono rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
             <span
               className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"
@@ -56,15 +46,10 @@ export function Hero() {
               <ArrowUpRight size={16} weight="regular" aria-hidden="true" />
             </a>
           </div>
-        </motion.div>
+        </div>
 
         {/* Right Column: Keizha's Real Portrait Photo */}
-        <motion.div
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
-          className="lg:col-span-4 flex justify-start lg:justify-end"
-        >
+        <div className="lg:col-span-4 flex justify-start lg:justify-end transition-all duration-700 ease-out">
           <div className="relative w-full max-w-[340px] aspect-[4/5] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm group">
             <Image
               src="/images/portrait/keizha.jpg"
@@ -87,7 +72,7 @@ export function Hero() {
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
