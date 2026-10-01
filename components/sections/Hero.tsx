@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { site } from "@/content/site";
 import { fadeUpVariants, staggerContainer } from "@/lib/motion";
@@ -70,28 +71,31 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Right Column: Portrait / Visual Anchor */}
+        {/* Right Column: Portrait Photo with Next.js Image */}
         <motion.div
           variants={shouldReduceMotion ? undefined : fadeUpVariants}
           className="lg:col-span-4 flex justify-start lg:justify-end"
         >
-          <div className="relative w-full max-w-[320px] aspect-[3/4] rounded border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden flex flex-col justify-between p-6 shadow-sm">
-            <div className="flex justify-between items-start text-xs font-mono text-[var(--color-text-muted)]">
-              <span>PORTRAIT</span>
-              <span>2024</span>
-            </div>
+          <div className="relative w-full max-w-[320px] aspect-[3/4] rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden shadow-sm group">
+            <Image
+              src="/images/portrait/keizha.jpg"
+              alt="Keizha Tanuwijaya Sumbaymider"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 320px"
+              className="object-cover object-top filter grayscale contrast-105 group-hover:grayscale-0 transition-all duration-500"
+            />
+            {/* Subtle gradient vignette at the bottom */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
-            <div className="my-auto text-center py-12">
-              <div className="w-20 h-20 mx-auto rounded-full border border-dashed border-[var(--color-border)] flex items-center justify-center text-xs font-mono text-[var(--color-text-muted)] mb-3">
-                KT
-              </div>
-              <p className="text-xs font-mono text-[var(--color-text-muted)]">
-                Keizha Tanuwijaya
+            {/* Bottom Caption Overlay */}
+            <div className="absolute bottom-3 left-4 right-4 text-white pointer-events-none">
+              <p className="text-xs font-mono font-medium tracking-tight">
+                Keizha Tanuwijaya S.
               </p>
-            </div>
-
-            <div className="text-[11px] font-mono text-[var(--color-text-muted)] border-t border-[var(--color-border)]/60 pt-3">
-              Jakarta, Indonesia
+              <p className="text-[10px] font-mono text-neutral-300">
+                Jakarta, Indonesia
+              </p>
             </div>
           </div>
         </motion.div>
