@@ -49,8 +49,7 @@ export const skillGroups: SkillGroup[] = [
       { name: "GitHub", level: "comfortable" },
       { name: "VS Code", level: "comfortable" },
       { name: "Vercel", level: "comfortable" },
-      { name: "Figma", level: "comfortable" },
-      { name: "Antigravity", level: "comfortable" },
+      { name: "Figma", level: "comfortable" }
     ],
   },
 ];

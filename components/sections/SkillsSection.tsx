@@ -79,7 +79,7 @@ function CategoryRow({
                  py-5 border-b border-[var(--color-border)] items-start"
     >
       {/* Category label */}
-      <span className="font-mono text-[11px] uppercase tracking-widest text-[var(--color-text-muted)] pt-0.5 shrink-0">
+      <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[var(--color-text)] pt-0.5 shrink-0">
         {label}
       </span>
 
@@ -108,7 +108,8 @@ export function SkillsSection() {
         <RevealLine>
           <h2
             id="skills-heading"
-            className="text-3xl sm:text-4xl font-medium tracking-tight text-[var(--color-text)] mb-4"
+            className="text-3xl sm:text-5xl font-medium tracking-tight text-[var(--color-text)] mb-4"
+            style={{ fontFamily: "'Iowan Old Style', 'Georgia', serif" }}
           >
             Skills &amp; Tools
           </h2>
