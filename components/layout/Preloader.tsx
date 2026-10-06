@@ -1,10 +1,24 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface PreloaderProps {
   onComplete?: () => void;
+}
+
+const PRELOADER_SESSION_KEY = "keizha-preloader-seen";
+
+function subscribeToPreloaderSession() {
+  return () => {};
+}
+
+function getPreloaderSessionSnapshot() {
+  try {
+    return window.sessionStorage.getItem(PRELOADER_SESSION_KEY) === "true";
+  } catch {
+    return false;
+  }
 }
 
 function getWindowDimensions() {
@@ -36,6 +50,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
   const [isExiting, setIsExiting] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [dimension, setDimension] = useState({ width: 0, height: 0 });
+  const hasSeenPreloader = useSyncExternalStore(
+    subscribeToPreloaderSession,
+    getPreloaderSessionSnapshot,
+    () => false
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -51,6 +70,22 @@ export function Preloader({ onComplete }: PreloaderProps) {
   }, []);
 
   useEffect(() => {
+    if (isFinished || hasSeenPreloader) return;
+
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousDocumentOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousDocumentOverflow;
+    };
+  }, [hasSeenPreloader, isFinished]);
+
+  useEffect(() => {
+    if (hasSeenPreloader) return;
+
     if (index === words.length - 1) {
       // Pause slightly on the final word "Hello" then trigger the upward curve exit
       const exitTimer = setTimeout(() => {
@@ -58,6 +93,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
       }, 500);
 
       const finishTimer = setTimeout(() => {
+        try {
+          window.sessionStorage.setItem(PRELOADER_SESSION_KEY, "true");
+        } catch {
+          // The preloader can still finish when session storage is unavailable.
+        }
         setIsFinished(true);
         onComplete?.();
       }, 2600);
@@ -76,9 +116,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
     );
 
     return () => clearTimeout(intervalTimer);
-  }, [index, words.length, onComplete]);
+  }, [hasSeenPreloader, index, words.length, onComplete]);
 
-  if (isFinished) return null;
+  if (isFinished || hasSeenPreloader) return null;
 
   const navbarRevealX = 78;
   const navbarRevealY = 48;
@@ -97,7 +137,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
         ease: [0.76, 0, 0.24, 1],
         delay: 0.35,
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
+      className="fixed inset-0 z-50 flex items-center justify-center pointer-events-auto"
       style={{ isolation: "isolate" }}
     >
       {/* Central Multilingual Greeting Text */}

@@ -6,6 +6,7 @@ export const skillGroups: SkillGroup[] = [
     skills: [
       { name: "Python", level: "comfortable", projectSlugs: ["deepfruit"] },
       { name: "C++", level: "comfortable" },
+      { name: "Java", level: "comfortable" },
       { name: "MySQL", level: "comfortable" },
       { name: "Figma", level: "comfortable", projectSlugs: ["fontdale-mall"] },
     ],
@@ -47,6 +48,6 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     label: "Learning",
-    skills: [{ name: "Java", level: "learning" }],
+    skills: [{ name: "Next.js", level: "learning" }],
   },
 ];

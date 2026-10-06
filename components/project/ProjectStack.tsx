@@ -18,16 +18,27 @@ interface ProjectStackProps {
   projects: Project[];
 }
 
+interface ProjectAnimationCustom {
+  direction: number;
+  reduceMotion: boolean;
+}
+
 const projectVariants: Variants = {
-  enter: (direction: number) => ({ opacity: 0, x: direction * 18 }),
+  enter: ({ direction, reduceMotion }: ProjectAnimationCustom) => ({
+    opacity: 0,
+    x: reduceMotion ? 0 : direction * 18,
+  }),
   center: { opacity: 1, x: 0 },
-  exit: (direction: number) => ({ opacity: 0, x: direction * -18 }),
+  exit: ({ direction, reduceMotion }: ProjectAnimationCustom) => ({
+    opacity: 0,
+    x: reduceMotion ? 0 : direction * -18,
+  }),
 };
 
 export function ProjectStack({ projects }: ProjectStackProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = Boolean(useReducedMotion());
 
   if (!projects.length) return null;
 
@@ -140,17 +151,21 @@ export function ProjectStack({ projects }: ProjectStackProps) {
 
       {/* Active Document Card Presentation */}
       <div className="relative min-h-[360px]">
-        <AnimatePresence mode="wait" initial={false} custom={direction}>
+        <AnimatePresence
+          mode="wait"
+          initial={false}
+          custom={{ direction, reduceMotion: shouldReduceMotion }}
+        >
           <motion.div
             key={currentProject.slug}
-            custom={direction}
+            custom={{ direction, reduceMotion: shouldReduceMotion }}
             variants={projectVariants}
             initial="enter"
             animate="center"
             exit="exit"
             transition={{
-              duration: shouldReduceMotion ? 0 : 0.3,
-              ease: [0.4, 0, 0.2, 1],
+              duration: shouldReduceMotion ? 0.18 : 0.3,
+              ease: shouldReduceMotion ? "easeOut" : [0.4, 0, 0.2, 1],
             }}
             className="rounded border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sm:p-10 flex flex-col justify-between shadow-sm"
           >

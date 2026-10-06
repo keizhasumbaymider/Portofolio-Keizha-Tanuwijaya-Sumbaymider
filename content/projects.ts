@@ -60,7 +60,12 @@ export const projects: Project[] = [
         height: 902,
       },
     ],
-    technologies: [{ name: "Figma", verified: true }],
+    technologies: [
+      { name: "Figma", verified: true },
+      { name: "HTML", verified: true },
+      { name: "CSS", verified: true },
+      { name: "JavaScript", verified: true },
+    ],
     order: 2,
     featured: true,
     visibility: "published",
