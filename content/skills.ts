@@ -2,52 +2,55 @@ import type { SkillGroup } from "@/types/content";
 
 export const skillGroups: SkillGroup[] = [
   {
-    label: "Comfortable",
+    label: "Programming",
     skills: [
-      { name: "Python", level: "comfortable", projectSlugs: ["deepfruit"] },
+      { name: "Python", level: "comfortable" },
       { name: "C++", level: "comfortable" },
       { name: "Java", level: "comfortable" },
-      { name: "MySQL", level: "comfortable" },
-      { name: "Figma", level: "comfortable", projectSlugs: ["fontdale-mall"] },
+      { name: "JavaScript", level: "comfortable" },
     ],
   },
   {
-    label: "Used in projects",
+    label: "Web Development",
     skills: [
-      {
-        name: "TensorFlow",
-        level: "used-in-projects",
-        projectSlugs: ["deepfruit"],
-      },
-      {
-        name: "Keras",
-        level: "used-in-projects",
-        projectSlugs: ["deepfruit"],
-      },
-      {
-        name: "MobileNetV2",
-        level: "used-in-projects",
-        projectSlugs: ["deepfruit"],
-      },
-      {
-        name: "Transfer Learning",
-        level: "used-in-projects",
-        projectSlugs: ["deepfruit"],
-      },
-      {
-        name: "Data Augmentation",
-        level: "used-in-projects",
-        projectSlugs: ["deepfruit"],
-      },
-      {
-        name: "Computer Vision",
-        level: "used-in-projects",
-        projectSlugs: ["deepfruit"],
-      },
+      { name: "HTML", level: "comfortable" },
+      { name: "CSS", level: "comfortable" },
+      { name: "React", level: "comfortable" },
+      { name: "Next.js", level: "comfortable" },
     ],
   },
   {
-    label: "Learning",
-    skills: [{ name: "Next.js", level: "learning" }],
+    label: "Database",
+    skills: [
+      { name: "MySQL", level: "comfortable" },
+    ],
+  },
+  {
+    label: "ML / Computer Vision",
+    skills: [
+      { name: "MobileNetV2", level: "used-in-projects", projectSlugs: ["deepfruit"] },
+      { name: "Transfer Learning", level: "used-in-projects", projectSlugs: ["deepfruit"] },
+      { name: "OpenCV", level: "used-in-projects", projectSlugs: ["deepfruit"] },
+      { name: "MediaPipe", level: "used-in-projects", projectSlugs: ["deepfruit"] },
+    ],
+  },
+  {
+    label: "UI / UX",
+    skills: [
+      { name: "Figma", level: "comfortable", projectSlugs: ["fontdale-mall"] },
+      { name: "UI/UX Design", level: "comfortable" },
+      { name: "Prototyping", level: "comfortable" },
+    ],
+  },
+  {
+    label: "Tools",
+    skills: [
+      { name: "Git", level: "comfortable" },
+      { name: "GitHub", level: "comfortable" },
+      { name: "VS Code", level: "comfortable" },
+      { name: "Vercel", level: "comfortable" },
+      { name: "Figma", level: "comfortable" },
+      { name: "Antigravity", level: "comfortable" },
+    ],
   },
 ];
