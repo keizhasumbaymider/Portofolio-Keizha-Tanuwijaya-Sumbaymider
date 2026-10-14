@@ -1,35 +1,28 @@
+"use client";
+
 import { site } from "@/content/site";
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <footer className="border-t border-[var(--color-border)] py-12 px-6 mt-20">
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 text-xs text-[var(--color-text-muted)] font-mono">
-        <div>
-          <p>
-            © {currentYear} {site.fullName}.
-          </p>
-          <p className="mt-1">Software Engineering · BINUS University</p>
+    <footer className="px-6 sm:px-8 py-10 border-t border-[#262626] bg-[#0A0A0A]">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-xs text-[#737373]">
+        <div className="flex items-center gap-3">
+          <span className="w-2 h-2 rounded-full bg-[#DC2626]" />
+          <span>© {new Date().getFullYear()} {site.fullName}. All rights reserved.</span>
         </div>
 
         <div className="flex items-center gap-6">
-          <a
-            href="#hero"
-            className="hover:text-[var(--color-text)] transition-colors"
+          <span className="text-[#525252]">Jakarta, UTC+7</span>
+          <button
+            onClick={scrollToTop}
+            className="hover:text-white transition-colors flex items-center gap-1 text-[#A3A3A3]"
           >
             Back to top ↑
-          </a>
-          {site.github && (
-            <a
-              href={site.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--color-text)] transition-colors"
-            >
-              GitHub
-            </a>
-          )}
+          </button>
         </div>
       </div>
     </footer>

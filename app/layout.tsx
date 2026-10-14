@@ -1,47 +1,36 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Manrope } from "next/font/google";
+import { Instrument_Serif, Manrope, Geist_Mono } from "next/font/google";
 import { site } from "@/content/site";
-import { CursorGlow } from "@/components/ui/CursorGlow";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import "./globals.css";
 
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
 const manropeSans = Manrope({
-  variable: "--font-sans",
+  variable: "--font-manrope",
   subsets: ["latin"],
   display: "swap",
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-mono",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["400", "500"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: site.fullName,
-    template: `%s — ${site.fullName}`,
+    default: `${site.fullName} | Software Engineering`,
+    template: `%s - ${site.fullName}`,
   },
   description: site.metaDescription,
   metadataBase: new URL(site.url),
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: site.url,
-    siteName: site.fullName,
-    title: site.fullName,
-    description: site.metaDescription,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: site.fullName,
-    description: site.metaDescription,
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
 };
 
 export default function RootLayout({
@@ -52,14 +41,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={`${manropeSans.variable} ${ibmPlexMono.variable}`}
+      className={`${instrumentSerif.variable} ${manropeSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <CursorGlow />
-          {children}
-        </ThemeProvider>
+      <body className="min-h-full flex flex-col font-sans bg-[#f4f4f1] text-[#111114]">
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
   );

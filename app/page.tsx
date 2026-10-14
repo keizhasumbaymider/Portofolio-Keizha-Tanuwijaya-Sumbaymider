@@ -1,40 +1,26 @@
 import { SkipLink } from "@/components/layout/SkipLink";
 import { Navigation } from "@/components/layout/Navigation";
-import { Preloader } from "@/components/layout/Preloader";
 import { Hero } from "@/components/sections/Hero";
 import { AboutSection } from "@/components/sections/AboutSection";
-import { ProjectsSection } from "@/components/sections/ProjectsSection";
-import { SkillsSection } from "@/components/sections/SkillsSection";
 import { BackgroundSection } from "@/components/sections/BackgroundSection";
+import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
-import { Footer } from "@/components/layout/Footer";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { getPublishedProjects } from "@/content/projects";
 
 export default function HomePage() {
+  const projects = getPublishedProjects();
+
   return (
     <>
-      <Preloader />
       <SkipLink />
       <Navigation />
-      <main id="main-content">
+      <main id="main-content" className="relative isolate min-h-dvh overflow-hidden bg-[#f4f4f1] text-[#111114]">
         <Hero />
-        <ScrollReveal>
-          <AboutSection />
-        </ScrollReveal>
-        <ScrollReveal>
-          <ProjectsSection />
-        </ScrollReveal>
-        <ScrollReveal>
-          <SkillsSection />
-        </ScrollReveal>
-        <ScrollReveal>
-          <BackgroundSection />
-        </ScrollReveal>
-        <ScrollReveal>
-          <ContactSection />
-        </ScrollReveal>
+        <AboutSection />
+        <BackgroundSection />
+        <ProjectsSection projects={projects} />
+        <ContactSection />
       </main>
-      <Footer />
     </>
   );
 }

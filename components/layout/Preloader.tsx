@@ -1,224 +1,97 @@
 "use client";
 
-import { useEffect, useState, useMemo, useSyncExternalStore } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useRef, useEffect, useState } from "react";
+import { gsap } from "gsap";
 
-interface PreloaderProps {
-  onComplete?: () => void;
-}
-
-const PRELOADER_SESSION_KEY = "keizha-preloader-seen";
-
-function subscribeToPreloaderSession() {
-  return () => {};
-}
-
-function getPreloaderSessionSnapshot() {
-  try {
-    return window.sessionStorage.getItem(PRELOADER_SESSION_KEY) === "true";
-  } catch {
-    return false;
-  }
-}
-
-function getWindowDimensions() {
-  if (typeof window === "undefined") {
-    return { width: 0, height: 0 };
-  }
-  return { width: window.innerWidth, height: window.innerHeight };
-}
-
-export function Preloader({ onComplete }: PreloaderProps) {
-  const words = useMemo(
-    () => [
-      "Halo",
-      "你好",
-      "Hola",
-      "Bonjour",
-      "Привет",
-      "こんにちは",
-      "مرحبا",
-      "안녕하세요",
-      "Ciao",
-      "Здравствуйте",
-      "Hello",
-    ],
-    []
-  );
-
-  const [index, setIndex] = useState(0);
-  const [isExiting, setIsExiting] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
-  const [dimension, setDimension] = useState({ width: 0, height: 0 });
-  const hasSeenPreloader = useSyncExternalStore(
-    subscribeToPreloaderSession,
-    getPreloaderSessionSnapshot,
-    () => false
-  );
+export function Preloader() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const counterRef = useRef<HTMLSpanElement>(null);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      setDimension(getWindowDimensions());
-    };
+    // Check inside a microtask/timer to avoid synchronous render warning
+    const timer = setTimeout(() => {
+      if (typeof window !== "undefined" && sessionStorage.getItem("preloaded")) {
+        setHidden(true);
+      }
+    }, 0);
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+    const container = containerRef.current;
+    const counter = counterRef.current;
+    if (!container || !counter) return () => clearTimeout(timer);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-  useEffect(() => {
-    if (isFinished || hasSeenPreloader) return;
-
-    const previousBodyOverflow = document.body.style.overflow;
-    const previousDocumentOverflow = document.documentElement.style.overflow;
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = previousBodyOverflow;
-      document.documentElement.style.overflow = previousDocumentOverflow;
-    };
-  }, [hasSeenPreloader, isFinished]);
-
-  useEffect(() => {
-    if (hasSeenPreloader) return;
-
-    if (index === words.length - 1) {
-      // Pause slightly on the final word "Hello" then trigger the upward curve exit
-      const exitTimer = setTimeout(() => {
-        setIsExiting(true);
-      }, 500);
-
-      const finishTimer = setTimeout(() => {
-        try {
-          window.sessionStorage.setItem(PRELOADER_SESSION_KEY, "true");
-        } catch {
-          // The preloader can still finish when session storage is unavailable.
-        }
-        setIsFinished(true);
-        onComplete?.();
-      }, 2600);
-
+    if (prefersReduced) {
+      sessionStorage.setItem("preloaded", "1");
+      const rTimer = setTimeout(() => setHidden(true), 0);
       return () => {
-        clearTimeout(exitTimer);
-        clearTimeout(finishTimer);
+        clearTimeout(timer);
+        clearTimeout(rTimer);
       };
     }
 
-    const intervalTimer = setTimeout(
-      () => {
-        setIndex((prev) => prev + 1);
+    document.body.style.overflow = "hidden";
+
+    const obj = { val: 0 };
+    const tl = gsap.timeline({
+      onComplete: () => {
+        sessionStorage.setItem("preloaded", "1");
+        document.body.style.overflow = "";
+        setHidden(true);
       },
-      index === 0 ? 500 : 260
-    );
+    });
 
-    return () => clearTimeout(intervalTimer);
-  }, [hasSeenPreloader, index, words.length, onComplete]);
+    tl.to(obj, {
+      val: 100,
+      duration: 1.6,
+      ease: "power2.inOut",
+      onUpdate: () => {
+        counter.textContent = Math.round(obj.val).toString();
+      },
+    })
+      .to(
+        container,
+        {
+          yPercent: -100,
+          duration: 0.7,
+          ease: "power3.inOut",
+        },
+        "+=0.2"
+      );
 
-  if (isFinished || hasSeenPreloader) return null;
+    return () => {
+      tl.kill();
+      document.body.style.overflow = "";
+    };
+  }, []);
 
-  const navbarRevealX = 78;
-  const navbarRevealY = 48;
-  const exitX = -Math.max(240, dimension.width * 0.28) + navbarRevealX;
-  const exitY = -Math.max(170, dimension.height * 0.2) + navbarRevealY;
-
-  const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + 300} 0 ${dimension.height} L0 0`;
-  const targetPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height} 0 ${dimension.height} L0 0`;
+  if (hidden) return null;
 
   return (
-    <motion.div
-      initial={{ y: 0 }}
-      animate={isExiting ? { y: "-100%" } : { y: 0 }}
-      transition={{
-        duration: 1.3,
-        ease: [0.76, 0, 0.24, 1],
-        delay: 0.35,
-      }}
-      className="fixed inset-0 z-50 flex items-center justify-center pointer-events-auto"
-      style={{ isolation: "isolate" }}
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-[100] flex items-center justify-center"
+      style={{ backgroundColor: "var(--color-bg)" }}
+      aria-hidden="true"
     >
-      {/* Central Multilingual Greeting Text */}
-      <div className="relative z-10 flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0.5, scale: 0.96 }}
-          animate={{ opacity: isExiting ? 0.2 : 1, scale: isExiting ? 0.96 : 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="relative flex items-center justify-center"
+      <div className="flex items-baseline gap-1 font-mono">
+        <span
+          ref={counterRef}
+          className="text-7xl sm:text-9xl font-medium tabular-nums"
+          style={{ color: "var(--color-text)" }}
         >
-          <AnimatePresence mode="wait">
-            {!isExiting ? (
-              <motion.p
-                key={words[index]}
-                initial={{ opacity: 0, y: 14, filter: "blur(3px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -16, filter: "blur(2px)" }}
-                transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
-                className="flex items-center gap-3 text-3xl sm:text-5xl md:text-6xl font-mono font-medium tracking-tight text-white select-none drop-shadow-[0_0_18px_rgba(52,211,153,0.25)]"
-              >
-                <span
-                  className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_18px_rgba(52,211,153,0.9)]"
-                  aria-hidden="true"
-                />
-                <span>{words[index]}</span>
-              </motion.p>
-            ) : (
-              /* Fluid transition moving towards the navbar position on exit */
-              <motion.p
-                key="exit-to-nav"
-                initial={{
-                  x: 0,
-                  y: 0,
-                  scale: 1,
-                  opacity: 1,
-                  filter: "blur(0px)",
-                  rotate: 0,
-                }}
-                animate={{
-                  x: exitX,
-                  y: exitY,
-                  scale: 0.28,
-                  opacity: 0,
-                  filter: "blur(1.5px)",
-                  rotate: -7,
-                }}
-                transition={{
-                  duration: 1.5,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                style={{ transformOrigin: `${navbarRevealX}px ${navbarRevealY}px` }}
-                className="flex items-center gap-2 text-4xl sm:text-6xl font-mono text-white select-none pointer-events-none drop-shadow-[0_0_30px_rgba(52,211,153,0.3)]"
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.9)]" />
-                <span>Hello</span>
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </motion.div>
+          0
+        </span>
+        <span
+          className="text-2xl sm:text-4xl"
+          style={{ color: "var(--color-accent)" }}
+        >
+          %
+        </span>
       </div>
-
-      {/* SVG Curved Liquid Curtain */}
-      <svg
-        className="absolute top-0 left-0 w-full h-[calc(100%+300px)] pointer-events-none"
-        viewBox={`0 0 ${dimension.width} ${dimension.height + 300}`}
-        preserveAspectRatio="none"
-      >
-        <motion.path
-          fill="#121214"
-          initial={{ d: initialPath }}
-          animate={
-            isExiting
-              ? {
-                  d: targetPath,
-                  opacity: 0.94,
-                  transition: { duration: 1.45, ease: [0.22, 1, 0.36, 1] },
-                }
-              : { d: initialPath, opacity: 1 }
-          }
-        />
-      </svg>
-    </motion.div>
+    </div>
   );
 }

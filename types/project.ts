@@ -2,7 +2,7 @@ export type ProjectStatus =
   "Live" | "Not deployed" | "In progress" | "Archived";
 export type ProjectType = "academic" | "personal" | "team" | "individual";
 export type ProjectVisibility = "published" | "draft" | "hidden";
-export type SkillLevel = "comfortable" | "used-in-projects" | "learning";
+export type SkillLevel = "comfortable" | "used-in-projects" | "learning" | "basic";
 
 export interface ProjectLink {
   label: string;

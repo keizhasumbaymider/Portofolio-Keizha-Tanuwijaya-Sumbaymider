@@ -6,7 +6,7 @@ export const skillGroups: SkillGroup[] = [
     skills: [
       { name: "Python", level: "comfortable" },
       { name: "C++", level: "comfortable" },
-      { name: "Java", level: "comfortable" },
+      { name: "Java", level: "basic" },
       { name: "JavaScript", level: "comfortable" },
     ],
   },
@@ -49,7 +49,6 @@ export const skillGroups: SkillGroup[] = [
       { name: "GitHub", level: "comfortable" },
       { name: "VS Code", level: "comfortable" },
       { name: "Vercel", level: "comfortable" },
-      { name: "Figma", level: "comfortable" }
     ],
   },
 ];

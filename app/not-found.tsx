@@ -9,35 +9,33 @@ export default function NotFound() {
   return (
     <main
       id="main-content"
-      style={{
-        minHeight: "100dvh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "2rem",
-        textAlign: "center",
-      }}
+      className="min-h-[100dvh] flex flex-col items-center justify-center px-6 text-center"
     >
       <p
         aria-hidden="true"
-        style={{ fontSize: "4rem", fontWeight: 700, lineHeight: 1 }}
+        className="text-8xl font-medium tracking-tighter"
+        style={{ color: "var(--color-text)" }}
       >
         404
       </p>
-      <h1 style={{ fontSize: "1.25rem", marginTop: "1rem" }}>Page not found</h1>
-      <p style={{ marginTop: "0.5rem", opacity: 0.6 }}>
+      <h1
+        className="text-xl mt-4"
+        style={{ color: "var(--color-text)" }}
+      >
+        Page not found
+      </h1>
+      <p
+        className="mt-2 text-sm"
+        style={{ color: "var(--color-text-muted)" }}
+      >
         This page does not exist or has been moved.
       </p>
       <Link
         href="/"
-        style={{
-          marginTop: "2rem",
-          textDecoration: "underline",
-          textUnderlineOffset: "4px",
-        }}
+        className="mt-8 text-sm font-mono underline underline-offset-4 transition-colors hover:text-[var(--color-accent)]"
+        style={{ color: "var(--color-text-muted)" }}
       >
-        ← Back to home
+        Back to home
       </Link>
     </main>
   );
