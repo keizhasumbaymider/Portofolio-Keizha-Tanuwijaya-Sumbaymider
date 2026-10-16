@@ -180,7 +180,7 @@ export function Hero() {
 
         {/* Concise Context Description */}
         <p className="hero-description text-base sm:text-xl text-[#111114]/70 max-w-3xl leading-relaxed font-light">
-          Undergraduate Software Engineering student at <span className="text-[#111114] font-medium">BINUS University</span> nterested in software engineering, front-end development, and creating intuitive user experiences through thoughtful UI/UX design.
+          Undergraduate Software Engineering student at <span className="text-[#111114] font-medium">BINUS University</span> interested in software engineering, front-end development, and creating intuitive user experiences through thoughtful UI/UX design.
         </p>
 
         {/* Actions & Links Bar */}

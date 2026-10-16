@@ -20,11 +20,11 @@ export function AboutSection() {
       gsap.from(".about-section-tag", {
         opacity: 0,
         y: -20,
-        duration: 0.7,
+        duration: 1.5,
         ease: "back.out(1.8)",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
+          start: "top 80%",
         },
       });
 
@@ -51,12 +51,12 @@ export function AboutSection() {
             opacity: word.classList.contains("highlight-word") ? 1 : 0.4,
             y: 0,
             filter: "blur(0px)",
-            duration: 0.6,
+            duration: 1,
             ease: "power2.out",
             delay: idx * 0.08,
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: "top 75%",
+              start: "top 20%",
               toggleActions: "play none none reset",
             },
           }
